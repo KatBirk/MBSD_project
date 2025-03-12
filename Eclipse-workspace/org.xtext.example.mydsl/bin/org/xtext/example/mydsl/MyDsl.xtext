@@ -1,0 +1,64 @@
+grammar org.xtext.example.mydsl.MyDsl with org.eclipse.xtext.common.Terminals
+
+generate myDsl "http://www.xtext.org/example/mydsl/MyDsl"
+
+
+Story:
+    'STORY' name=ID '{'
+        state=State
+        chapters+=Chapter+
+    '}';
+
+State:
+    'STATE' '{'
+        properties+=Property*
+    '}';
+
+Property:
+    'PROPERTY' 'name' '=' name=ID ',' 'type' '=' type=Type ',' 'value' '=' value=Value;
+
+Chapter:
+    'CHAPTER' 'id' '=' name=ID ',' 'entrances' '=' '(' entrances+=StartPoint ( ';' entrances+=StartPoint )* ')' '{'
+        scenarios+=Scenario+
+    '}';
+
+StartPoint:
+    name=ID ',' scenarioId=[Scenario|ID];
+
+Scenario:
+    'SCENARIO' 'id' '=' name=ID '{'
+        text=Text?
+        ( choices+=Choice+ | 'END' | goto=GoToChapter )
+    '}';
+
+Text:
+    'TEXT' text=STRING;
+
+Choice:
+    'CHOICE' 'scenarioId' '=' scenarioId=[Scenario|ID] ',' 'description' '=' description=STRING ( ',' stateChanges+=StateChange ( ',' stateChanges+=StateChange )* )?;
+
+StateChange:
+    variable=[Property|ID] operator=Operator value=Value;
+
+GoToChapter:
+    'GOTOCHAPTER' 'chapterId' '=' chapterId=[Chapter|ID] ',' 'entrance' '=' entrance=[StartPoint|ID];
+
+
+enum Type:
+    TEXT = 'TEXT' |
+    NUMBER = 'NUMBER' |
+    BOOLEAN = 'YES/NO' |
+    LIST = 'LIST'
+;
+
+enum Operator:
+    ASSIGN = '=' |   
+    PLUS = '+' |
+    MINUS = '-' |
+    MULTIPLY = '*' |
+    DIVIDE = '/'
+;
+
+Value:
+    STRING | INT | ('true' | 'false')
+;
