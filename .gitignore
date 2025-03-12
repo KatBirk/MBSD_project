@@ -1,25 +1,19 @@
-*target*
-*.jar
-*.war
-*.ear
-*.class
+# Eclipse workspace metadata (should not be shared)
+.metadata/
 
-# eclipse specific git ignore
-*.pydevproject
-.metadata
-bin/**
-tmp/**
-tmp/**/*
+# Build output directories
+bin/
+target/
+build/
+
+# Xtext generated code
+src-gen/
+
+# Temporary files
+*.log
 *.tmp
-*.bak
-*.swp
-*~.nib
-local.properties
-.settings/
-.loadpath
 
-# External tool builders
-.externalToolBuilders/
-
-# Locally stored "Eclipse launch configurations"
-*.launch
+# Uncomment below if you prefer not to share Eclipse project configuration files
+#.project
+#.classpath
+#.settings/
